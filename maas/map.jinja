@@ -8,7 +8,7 @@ Debian:
   - maas-rackd
 {%- endload %}
 
-{%- set cluster = salt['grains.filter_by'](cluster_defaults, merge=salt['pillar.get']('maas:cluster', {})) %}
+{%- set cluster = salt['grains.filter_by'](cluster_defaults|to_json, merge=salt['pillar.get']('maas:cluster', {})) %}
 
 {%- load_yaml as region_defaults %}
 Debian:
@@ -24,7 +24,7 @@ Debian:
     port: 80
 {%- endload %}
 
-{%- set region = salt['grains.filter_by'](region_defaults, merge=salt['pillar.get']('maas:region', {})) %}
+{%- set region = salt['grains.filter_by'](region_defaults|to_json, merge=salt['pillar.get']('maas:region', {})) %}
 
 {%- load_yaml as mirror_defaults %}
 Debian:
@@ -33,4 +33,4 @@ Debian:
   - ubuntu-cloudimage-keyring
 {%- endload %}
 
-{%- set mirror = salt['grains.filter_by'](mirror_defaults, merge=salt['pillar.get']('maas:mirror', {})) %}
+{%- set mirror = salt['grains.filter_by'](mirror_defaults|to_json, merge=salt['pillar.get']('maas:mirror', {})) %}
