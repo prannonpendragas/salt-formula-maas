@@ -1,36 +1,23 @@
+{%- set cluster = salt['grains.filter_by']({
+  'Debian': {
+    'pkgs': ['maas-rack-controller','ipmitool'],
+    'services': ['maas-rackd'],
+  },
+}, merge=salt['pillar.get']('maas:cluster', {})) %}
 
-{%- load_yaml as cluster_defaults %}
-Debian:
-  pkgs:
-  - maas-rack-controller
-  - ipmitool
-  services:
-  - maas-rackd
-{%- endload %}
+{%- set region = salt['grains.filter_by']({
+  'Debian': {
+    'pkgs': ['maas-region-controller', 'python-oauth'],
+    'services': ['maas-regiond', 'bind9', 'apache2'],
+    'bind: {
+      'host': '0.0.0.0',
+      'port': '80',
+    },
+  },
+}, merge=salt['pillar.get']('maas:region', {})) %}
 
-{%- set cluster = salt['grains.filter_by'](cluster_defaults|tojson, merge=salt['pillar.get']('maas:cluster', {})) %}
-
-{%- load_yaml as region_defaults %}
-Debian:
-  pkgs:
-  - maas-region-controller
-  - python-oauth
-  services:
-  - maas-regiond
-  - bind9
-  - apache2
-  bind:
-    host: 0.0.0.0
-    port: 80
-{%- endload %}
-
-{%- set region = salt['grains.filter_by'](region_defaults|tojson, merge=salt['pillar.get']('maas:region', {})) %}
-
-{%- load_yaml as mirror_defaults %}
-Debian:
-  pkgs:
-  - simplestreams
-  - ubuntu-cloudimage-keyring
-{%- endload %}
-
-{%- set mirror = salt['grains.filter_by'](mirror_defaults|tojson, merge=salt['pillar.get']('maas:mirror', {})) %}
+{%- set mirror = salt['grains.filter_by']({
+  'Debian': {
+    'pkgs': ['simplestreams', 'ubuntu-cloudimage-keyring'],
+  },
+}, merge=salt['pillar.get']('maas:mirror', {})) %}
