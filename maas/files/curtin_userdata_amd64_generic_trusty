@@ -27,7 +27,7 @@ late_commands:
 {%- else %}
   {%- set saltstack_repo = 'deb [arch=amd64] ' + cluster.saltstack_repo_trusty -%}
 {%- endif %}
-  apt_01_set_repo: ["curtin", "in-target", "--", "sh", "-c", "echo '{{ saltstack_repo }}' >> /etc/apt/sources.list.d/mcp_saltstack.list"]
+  apt_01_set_repo: ["curtin", "in-target", "--", "sh", "-c", "echo '{{ saltstack_repo }}' >> /etc/apt/sources.list.d/saltstack.list"]
   apt_03_update: ["curtin", "in-target", "--", "apt-get", "update"]
   salt_01_install: ["curtin", "in-target", "--", "apt-get", "-y", "install", "salt-minion"]
   salt_02_hostname_set: ["curtin", "in-target", "--", "echo", "{% raw %}{{node.hostname}}{% endraw %}.{{pillar.linux.system.domain}}"]
